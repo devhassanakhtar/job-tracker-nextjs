@@ -32,7 +32,7 @@ const SignUp = () => {
               <Input
                 id="name"
                 type="text"
-                className="border-gray-300 focus:border-primary focus:ring-primary"
+                className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="John Doe"
                 required
               ></Input>
@@ -44,7 +44,7 @@ const SignUp = () => {
               <Input
                 id="email"
                 type="email"
-                className="border-gray-300 focus:border-primary focus:ring-primary"
+                className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="john@example.com"
                 required
               ></Input>
@@ -56,7 +56,7 @@ const SignUp = () => {
               <Input
                 id="password"
                 type="password"
-                className="border-gray-300 focus:border-primary focus:ring-primary"
+                className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="John Doe"
                 minLength={8}
                 required
@@ -66,7 +66,7 @@ const SignUp = () => {
           <CardFooter className="flex flex-col space-y-4">
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90"
+              className="w-full rounded-lg bg-primary hover:bg-primary/90"
             >
               Sign Up
             </Button>
@@ -74,7 +74,7 @@ const SignUp = () => {
               Already have an account?{" "}
               <Link
                 href="/sign-in"
-                className="font-medium text-primary hover:underline"
+                className="font-medium  text-primary hover:underline"
               >
                 Sign In
               </Link>
