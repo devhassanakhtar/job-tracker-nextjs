@@ -5,7 +5,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 
-const client = new MongoClient(process.env.MONGODB_URI!);
+if (!process.env.MONGODB_URI) {
+  throw new Error("MONGODB_URI is missing");
+}
+
+const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db();
 
 export const auth = betterAuth({
