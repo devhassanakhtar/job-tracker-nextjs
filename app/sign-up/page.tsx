@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,11 +9,49 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { signUp } from "@/lib/auth/auth-client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter()
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+      });
+
+      if (result.error) {
+        setError(result.error.message?? "Failed to sign up");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4">
       <Card className="w-full max-w-md border-gray-200 shadow-lg">
@@ -23,8 +63,13 @@ const SignUp = () => {
             Create an account to start tracking your job applications
           </CardDescription>
         </CardHeader>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <CardContent className="space-y-4">
+            {error && (
+              <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="name" className="text-gray-700">
                 Name
@@ -34,6 +79,8 @@ const SignUp = () => {
                 type="text"
                 className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="John Doe"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
                 required
               ></Input>
             </div>
@@ -46,6 +93,8 @@ const SignUp = () => {
                 type="email"
                 className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="john@example.com"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 required
               ></Input>
             </div>
@@ -58,6 +107,8 @@ const SignUp = () => {
                 type="password"
                 className="border-gray-300 rounded-lg focus:border-primary focus:ring-primary"
                 placeholder="John Doe"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 minLength={8}
                 required
               ></Input>
@@ -67,8 +118,9 @@ const SignUp = () => {
             <Button
               type="submit"
               className="w-full rounded-lg bg-primary hover:bg-primary/90"
+              disabled={loading}
             >
-              Sign Up
+              {loading ? "Creating account..." : "Sign Up"}
             </Button>
             <p className="text-center text-sm text-gray-600">
               Already have an account?{" "}
